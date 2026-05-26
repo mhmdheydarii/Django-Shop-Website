@@ -1,0 +1,168 @@
+{% extends "dashboard/admin/base.html" %}
+{% load static %}
+
+{% block header %}
+<!-- Breadcrumb -->
+<div class="navbar-dark bg-dark" style="
+          background-image: url({% static 'svg/components/wave-pattern-light.svg' %});
+        ">
+    <div class="container content-space-1 content-space-b-lg-3">
+        <div class="row align-items-center">
+            <div class="col">
+                <div class="d-none d-lg-block">
+                    <h1 class="h2 text-white">داشبورد</h1>
+                </div>
+
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-light mb-0">
+                        <li class="breadcrumb-item">حساب</li>
+                        <li class="breadcrumb-item">داشبورد ادمین</li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            سفارشات
+                        </li>
+                    </ol>
+                </nav>
+                <!-- End Breadcrumb -->
+            </div>
+            <!-- End Col -->
+
+            <div class="col-auto">
+                <!-- Responsive Toggle Button -->
+                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#sidebarNav" aria-controls="sidebarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-default">
+                        <i class="bi-list"></i>
+                    </span>
+                    <span class="navbar-toggler-toggled">
+                        <i class="bi-x"></i>
+                    </span>
+                </button>
+                <!-- End Responsive Toggle Button -->
+            </div>
+            <!-- End Col -->
+        </div>
+        <!-- End Row -->
+    </div>
+</div>
+<!-- End Breadcrumb -->
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <!-- Header -->
+    <div class="card-header border-bottom">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="">سفارش شماره {{object.id}}</h5>
+        </div>
+    </div>
+    <!-- End Header -->
+
+    <!-- Body -->
+    <div class="card-body">
+
+        <div class="row">
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">شماره محصول</th>
+                            <th scope="col">تصویر</th>
+                            <th scope="col">نام محصول</th>
+                            <th scope="col">تعداد سفارش</th>
+                            <th scope="col"> قیمت هر واحد</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order_item in object.order_items.all %}
+                        <tr>
+                            <th scope="row">{{order_item.id}}</th>
+                            <td>
+                                <span class="avatar ">
+                                    <img class="avatar-img" src="{{order_item.product.image.url}}"
+                                        alt="Image Description">
+                                </span>
+                            </td>
+                            <td>{{order_item.product.title}}</td>
+                            <td>{{order_item.quantity}}</td>
+                            <td class="formatted-price">{{order_item.product.price}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- End Table -->
+
+        </div>
+        <!-- End Row -->
+
+
+    </div>
+    <div class="card-footer row pt-5 mt-5">
+        <form>
+            <div class="row mb-3 align-items-center">
+                <dt class="col-md-3">سفارش دهنده:</dt>
+                <dl class="col-md-3">{{object.user.user_profile.get_fullname}}</dl>
+                <dt class="col-md-3"> تاریخ سفارش:</dt>
+                <dl class="col-md-3">{{object.created_date|date:"Y-m-d h:i"}}</dl>
+                <!--<dt class="col-md-3">وضعیت سفارش:</dt>
+                <dl class="col-md-3 ">
+                    <select class="form-select">
+                        <option value="Relevance" selected="">در حال پردازش</option>
+                        <option value="mostRecent"></option>
+                    </select>
+                </dl>-->
+            </div>
+            <!-- End Row -->
+            <div class="row mb-3">
+                <dt class="col-md-3"> آدرس:</dt>
+                <dl class="col-md-3">{{object.state}} - {{object.city}} - {{object.address}}</dl>
+                <dt class="col-md-3"> کد پستی:</dt>
+                <dl class="col-md-3">{{object.zip_code}}</dl>
+            </div>
+            <div class="row mb-3">
+                <dt class="col-md-3">قیمت نهایی:</dt>
+                <dl class="col-md-3 formatted-price">{{object.calcolate_total_price}}</dl>
+                {% if object.coupon %}
+                <dt class="col-md-3">تخفیف: </dt>      
+                <dl class="col-md-3">%{{object.coupon.discount_percent}}</dl>
+                
+                <!--<dt class="col-md-3"> نوع ارسال:</dt>
+                <dl class="col-md-3">پیشتاز</dl>-->
+            </div>
+            <div class="row mb-3">  
+                <dt class="col-md-3"> قیمت نهایی با اعمال تخفیف:</dt>
+                <dl class="col-md-3 formatted-price">{{object.total_price}}</dl>  
+                {% endif %}
+                <!--<dt class="col-md-3"> نوع ارسال:</dt>
+                <dl class="col-md-3">پیشتاز</dl>-->
+            </div>
+            <div class=" d-flex pt-5 justify-content-end">
+                <a class="btn btn-secondary ms-3" href="{% url 'dashboard:customer:order-list' %}">بازگشت</a>
+            </div>
+        </form>
+    </div>
+    <!-- End Body -->
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        $("#search-query-filter").val(current_url_params.get("q") || "")
+        $("#order-by-filter").val(current_url_params.get("order_by") || "")
+    });
+
+    $("#order-by-filter").change(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        var selectedOption = $(this).val();
+        current_url_params.set("order_by", selectedOption)
+        let new_url = window.location.pathname + "?" + current_url_params.toString()
+        window.location.href = new_url
+    });
+
+</script>
+{% endblock extra_js %}
