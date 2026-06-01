@@ -36,7 +36,8 @@ class ProductGridView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["total_product"] = ProductModel.objects.filter(status=ProductStatusType.publish.value).count()
-        context["wishlist_items"] = ProductWishListModel.objects.filter(user=self.request.user).values_list("product__id", flat=True)
+        context["wishlist_items"] =  ProductWishListModel.objects.filter(user=self.request.user).values_list(
+        "product__id", flat=True) if self.request.user.is_authenticated else []
         context["categories"] = ProductCategoryModel.objects.all()
         return context
 
@@ -48,7 +49,8 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["extra_images"] = ProductImageModel.objects.filter(product=self.get_object())
-        context["is_wished"] = ProductWishListModel.objects.filter(user=self.request.user, product__id=self.get_object().id).exists()
+        context["is_wished"] = ProductWishListModel.objects.filter(user=self.request.user,
+        product__id=self.get_object().id).exists() if self.request.user.is_authenticated else False
         return context
     
 

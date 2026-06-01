@@ -8,7 +8,8 @@ def show_latest_products(context):
     request = context.get("request")
     latest_products = ProductModel.objects.filter(
         status=ProductStatusType.publish.value).order_by("-created_date")[:8]
-    wishlist_items = ProductWishListModel.objects.filter(user=request.user).values_list("product__id", flat=True)
+    wishlist_items = ProductWishListModel.objects.filter(user=request.user).values_list(
+        "product__id", flat=True) if request.user.is_authenticated else []
     return {"latest_products":latest_products, "request":request, "wishlist_items":wishlist_items}
 
 
@@ -17,5 +18,6 @@ def show_similar_products(context ,product):
     request = context.get("request")
     similar_products = ProductModel.objects.filter(
         status=ProductStatusType.publish.value, category__title=product.category).order_by("-created_date")[:4]
-    wishlist_items = ProductWishListModel.objects.filter(user=request.user).values_list("product__id", flat=True)
+    wishlist_items =  ProductWishListModel.objects.filter(user=request.user).values_list(
+        "product__id", flat=True) if request.user.is_authenticated else []
     return {"similar_products":similar_products, "request":request, "wishlist_items":wishlist_items}
