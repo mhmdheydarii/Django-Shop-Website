@@ -230,7 +230,7 @@
             <div class="tab-pane fade" id="accountOrdersTwo" role="tabpanel" aria-labelledby="accountOrdersTwo-tab">
                 <!-- Empty State -->
                 <div class="text-center content-space-1">
-                    <img class="avatar avatar-xl mb-3" src="./assets/svg/illustrations/empty-state-no-data.svg"
+                    <img class="avatar avatar-xl mb-3" src="{% static '/svg/illustrations/empty-state-no-data.svg' %}"
                         alt="Image Description">
                     <p class="card-text">هیچ داده ای برای نمایش وجود ندارد</p>
                     <a class="btn btn-white btn-sm" href="#">شروع به خرید کنید</a>
@@ -241,10 +241,10 @@
             <div class="tab-pane fade" id="accountOrdersThree" role="tabpanel" aria-labelledby="accountOrdersThree-tab">
                 <!-- Empty State -->
                 <div class="text-center content-space-1">
-                    <img class="avatar avatar-xl mb-3" src="./assets/svg/illustrations/empty-state-no-data.svg"
+                    <img class="avatar avatar-xl mb-3" src="{% static 'svg/illustrations/empty-state-no-data.svg' %}"
                         alt="Image Description">
                     <p class="card-text">هیچ داده ای برای نمایش وجود ندارد</p>
-                    <a class="btn btn-white btn-sm" href="#">شروع به خرید کنید</a>
+                    <a class="btn btn-white btn-sm" href="{% url 'shop:product-grid' %}">شروع به خرید کنید</a>
                 </div>
                 <!-- End Empty State -->
             </div>

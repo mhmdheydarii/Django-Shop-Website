@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DetailView
 from django.core.exceptions import FieldError
-from .models import ProductModel, ProductCategoryModel, ProductStatusType, ProductImageModel
+from .models import ProductModel, ProductCategoryModel, ProductStatusType, ProductImageModel, ProductWishListModel
 from cart.cart import CartSession
 
 
@@ -33,9 +33,8 @@ class ProductGridView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["total_product"] = ProductModel.objects.filter(
-            status=ProductStatusType.publish.value
-        ).count()
+        context["total_product"] = ProductModel.objects.filter(status=ProductStatusType.publish.value).count()
+        context["wishlist_items"] = ProductWishListModel.objects.filter(user=self.request.user).values_list("product__id", flat=True)
         context["categories"] = ProductCategoryModel.objects.all()
         return context
 
@@ -47,6 +46,7 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["extra_images"] = ProductImageModel.objects.filter(product=self.get_object())
+        context["is_wished"] = ProductWishListModel.objects.filter(user=self.request.user, product__id=self.get_object().id).exists()
         return context
     
 

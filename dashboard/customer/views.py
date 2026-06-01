@@ -15,6 +15,7 @@ from dashboard.customer.forms import (
 from django.core.exceptions import FieldError
 from accounts.models import Profile
 from order.models import UserAddressModel, OrderModel, StatusTypeModel
+from shop.models import ProductWishListModel
 
 # Create your views here.
 
@@ -128,3 +129,30 @@ class CustomerOrderDetailView(LoginRequiredMixin, HasCustomerPermission, DetailV
     
     def get_queryset(self):
         return OrderModel.objects.filter(user=self.request.user)
+    
+
+class CustomerWishListView(LoginRequiredMixin, HasCustomerPermission, ListView):
+    template_name = "dashboard/customer/wishlist/wishlist-list.html"
+    paginate_by = 2
+
+    def get_queryset(self):
+        queryset = ProductWishListModel.objects.all()
+        if search_q:= self.request.GET.get("q"):
+            queryset = queryset.filter(product__title__icontains=search_q)
+        if order_by:= self.request.GET.get("order_by"):
+            try:
+                queryset = queryset.order_by(order_by)
+            except FieldError:
+                pass
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_items"] = self.get_queryset().count()
+        return context
+    
+class CustomerWishListDeleteView(LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, DeleteView):
+    http_method_names = ["post"]
+    queryset = ProductWishListModel.objects.all()
+    success_url = reverse_lazy("dashboard:customer:wishlist-list")
+    success_message = "محصول با موفقیت از لیست شما حذف شد"

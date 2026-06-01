@@ -1,16 +1,21 @@
 from django import template
-from shop.models import ProductModel, ProductStatusType
+from shop.models import ProductModel, ProductStatusType, ProductWishListModel
 
 register = template.Library()
 
-@register.inclusion_tag('includes/latest-products.html')
-def show_latest_products():
+@register.inclusion_tag('includes/latest-products.html', takes_context=True)
+def show_latest_products(context):
+    request = context.get("request")
     latest_products = ProductModel.objects.filter(
         status=ProductStatusType.publish.value).order_by("-created_date")[:8]
-    return {"latest_products":latest_products}
+    wishlist_items = ProductWishListModel.objects.filter(user=request.user).values_list("product__id", flat=True)
+    return {"latest_products":latest_products, "request":request, "wishlist_items":wishlist_items}
 
-@register.inclusion_tag('includes/similar-products.html')
-def show_similar_products(product):
+
+@register.inclusion_tag('includes/similar-products.html', takes_context=True)
+def show_similar_products(context ,product):
+    request = context.get("request")
     similar_products = ProductModel.objects.filter(
         status=ProductStatusType.publish.value, category__title=product.category).order_by("-created_date")[:4]
-    return {"similar_products":similar_products}
+    wishlist_items = ProductWishListModel.objects.filter(user=request.user).values_list("product__id", flat=True)
+    return {"similar_products":similar_products, "request":request, "wishlist_items":wishlist_items}
