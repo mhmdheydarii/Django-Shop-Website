@@ -495,6 +495,24 @@
                 }
             });
         }
+        function AddToWishlist(element ,product_id) {
+            console.log(product_id)
+            $.ajax({
+                url: '{% url "shop:add-or-remove-wishlist" %}',
+                type: 'POST',
+                data: {
+                    product_id: product_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    console.log(response);
+                    $(element).toggleClass("active")
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
     </script>
 
     <!-- JS Plugins Init. -->

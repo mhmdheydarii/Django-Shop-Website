@@ -133,7 +133,7 @@ class CustomerOrderDetailView(LoginRequiredMixin, HasCustomerPermission, DetailV
 
 class CustomerWishListView(LoginRequiredMixin, HasCustomerPermission, ListView):
     template_name = "dashboard/customer/wishlist/wishlist-list.html"
-    paginate_by = 2
+    paginate_by = 9
 
     def get_queryset(self):
         queryset = ProductWishListModel.objects.all()

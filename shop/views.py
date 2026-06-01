@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, View
 from django.core.exceptions import FieldError
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from .models import ProductModel, ProductCategoryModel, ProductStatusType, ProductImageModel, ProductWishListModel
 from cart.cart import CartSession
 
@@ -50,3 +52,17 @@ class ProductDetailView(DetailView):
         return context
     
 
+class AddOrRemoveWishListView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        product_id = request.POST.get("product_id")
+        message = ""
+        if product_id:
+            try:
+                wishlist_item = ProductWishListModel.objects.get(user=request.user, product__id=product_id)
+                wishlist_item.delete()
+                message = "محصول با موفقیت از لیست علایق حذف شد"
+            except ProductWishListModel.DoesNotExist:
+                ProductWishListModel.objects.create(user=request.user ,product_id=product_id)
+                message = "محصول با موفقیت به لیست علایق افزوده شد"
+        return JsonResponse({"message":message})
