@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from .models import ProductModel, ProductCategoryModel, ProductStatusType, ProductImageModel, ProductWishListModel
 from cart.cart import CartSession
+from review.models import ReviewModel, ReviewTypeModel 
 
 
 class ProductGridView(ListView):
@@ -50,7 +51,8 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["extra_images"] = ProductImageModel.objects.filter(product=self.get_object())
         context["is_wished"] = ProductWishListModel.objects.filter(user=self.request.user,
-        product__id=self.get_object().id).exists() if self.request.user.is_authenticated else False
+            product__id=self.get_object().id).exists() if self.request.user.is_authenticated else False
+        context["reviews"] = ReviewModel.objects.filter(product=self.get_object(), status=ReviewTypeModel.accepted.value)
         return context
     
 

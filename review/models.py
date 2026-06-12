@@ -19,11 +19,11 @@ class ReviewModel(models.Model):
     )
     status = models.IntegerField(choices=ReviewTypeModel.choices, default=ReviewTypeModel.pending.value)
     created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField()
+    updated_date = models.DateTimeField(null=True, blank=True)
 
 
     def __str__(self):
-        return self.user.email
+        return f"{self.user.email} - {self.product.id}"
     
     class Meta:
         ordering = ["-created_date"]
