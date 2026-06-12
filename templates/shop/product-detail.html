@@ -164,9 +164,10 @@
 
             <div id="cart-success-message" class="alert alert-success" style="display:none;">
                 محصول با موفقیت به سبد خرید اضافه شد.
-            </div>     
+            </div>
             <div class="d-grid mb-4">
-                <button type="button" class="btn btn-primary btntransition" onclick="AddToCart('{{object.id}}')">افزودن به سبد خرید</button>
+                <button type="button" class="btn btn-primary btntransition" onclick="AddToCart('{{object.id}}')">افزودن
+                    به سبد خرید</button>
             </div>
             <!-- Media -->
             <div class="d-flex align-items-center">
@@ -388,7 +389,49 @@
                             </select>
                             <!-- End Select -->
                         </div>
+                        <div class="col-sm-auto">
+                            <button type="button" class="btn btn-primary btn-transition rounded-pill"
+                                data-bs-toggle="modal" data-bs-target="#submitReviewmodal">یک بررسی
+                                بنویسید</button>
+                        </div>
                         <!-- End Col -->
+                        <div class="modal" tabindex="-1" id="submitReviewmodal" aria-labelledby="#submitReviewmodal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">دیدگاه</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'review:submit-review' %}" method="post" id="review-form">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="product" value="{{object.id}}">
+                                            <div class="row">
+                                                <div class="mb-3">
+                                                    <select class="form-select form-select-sm" name="rate">
+                                                        <option value="1">1 ستاره</option>
+                                                        <option value="2">2 ستاره</option>
+                                                        <option value="3">3 ستاره</option>
+                                                        <option value="4">4 ستاره</option>
+                                                        <option value="5" selected>5 ستاره</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <textarea type="text" class="form-control form-control-lg md-3"
+                                                        name="description" id="description" required></textarea>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">بستن</button>
+                                        <button type="submit" class="btn btn-primary" form="review-form">ثبت دیدگاه</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- End Row -->
                 </div>
@@ -561,8 +604,6 @@
 
                 <div class="d-sm-flex justify-content-sm-end gap-2">
                     <a class="btn btn-link" href="#">ادامه مطلب <i class="bi-chevron-left small me-1"></i></a>
-                    <button type="button" class="btn btn-primary btn-transition rounded-pill">یک بررسی
-                        بنویسید</button>
                 </div>
             </div>
         </div>

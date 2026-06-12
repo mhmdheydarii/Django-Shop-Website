@@ -17,13 +17,12 @@ class SubmitReviewView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         product = form.cleaned_data["product"]
         messages.success(self.request, "دیدگاه شما با موفقیت ثبت شد و در انتظار تایید است")
-
-        return redirect(reverse_lazy("shpo:product-detail"), kwargs={"slug":product.slug})
+        return redirect(reverse_lazy("shop:product-detail", kwargs={"slug":product.slug}))
     
     def form_invalid(self, form):
         messages.error(self.request, "خطایی در ثبت دیدگاه اتفاق افتاد")
 
-        return redirect(self.request.META.get['HTTP_REFERER'])
+        return redirect(self.request.META.get('HTTP_REFERER'))
     
     def get_queryset(self):
         return ReviewModel.objects.filter(user=self.request.user)
