@@ -72,7 +72,7 @@ class OrderModel(models.Model):
         return {
             "id":self.status,
             "title":StatusTypeModel(self.status).name,
-            "lable":StatusTypeModel(self.status).label,
+            "label":StatusTypeModel(self.status).label,
         }
 
 class OrderItemModel(models.Model):

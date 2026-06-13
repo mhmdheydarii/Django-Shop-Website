@@ -26,4 +26,8 @@ urlpatterns = [
     # Order pages
     path("order/list/", views.AdminOrderListView.as_view(), name="order-list"),
     path("order/<int:pk>/detail/", views.AdminOrderDetailView.as_view(), name="order-detail"),
+
+    # Comments pages
+    path("review/list/", views.AdminReviewListView.as_view(), name="review-list"),
+    path("review/<int:pk>/edit/", views.AdminReviewEditView.as_view(), name="review-edit"),
 ]

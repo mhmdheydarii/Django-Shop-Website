@@ -52,11 +52,13 @@
         <div class="col-md-5">
             <!-- Rating -->
             <a class="d-flex gap-1 mb-4" href="#reviewSection">
-                <img src="{% static 'svg/illustrations/star.svg' %} " alt="Review rating" width="16">
-                <img src="{% static 'svg/illustrations/star.svg' %} " alt="Review rating" width="16">
-                <img src="{% static 'svg/illustrations/star.svg' %} " alt="Review rating" width="16">
-                <img src="{% static 'svg/illustrations/star.svg' %} " alt="Review rating" width="16">
-                <img src="{% static 'svg/illustrations/star.svg' %} " alt="Review rating" width="16">
+                {% for i in "12345" %}
+                    {% if i|add:0 <= object.product_review.rate %}
+                        <span><i class="bi bi-star-fill star-rate"></i></span>
+                    {% else %}
+                        <span><i class="bi bi-star star-rate"></i></span>
+                    {% endif %}
+                {% endfor %}
                 <span class="ms-1">287 نظر</span>
             </a>
             <!-- End Rating -->

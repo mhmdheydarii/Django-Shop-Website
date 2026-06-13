@@ -4,8 +4,7 @@
 {% block header %}
 <!-- Breadcrumb -->
 <div class="navbar-dark bg-dark" style="
-          background-image: url({% static 'svg/components/wave-pattern-light.svg' %});
-        ">
+          background-image: url({% static 'svg/components/wave-pattern-light.svg' %});">
     <div class="container content-space-1 content-space-b-lg-3">
         <div class="row align-items-center">
             <div class="col">
@@ -19,7 +18,7 @@
                         <li class="breadcrumb-item">حساب</li>
                         <li class="breadcrumb-item">داشبورد ادمین</li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            سفارشات
+                            نظرات
                         </li>
                     </ol>
                 </nav>
@@ -53,7 +52,7 @@
 <div class="card">
     <!-- Header -->
     <div class="card-header border-bottom">
-        <h5 class="card-header-title">تعداد سفارشات: {{total_items}}</h5>
+        <h5 class="card-header-title">تعداد نظرات: {{total_comments}}</h5>
     </div>
     <!-- End Header -->
 
@@ -80,8 +79,8 @@
                 <div class="col-md-3 py-1">
                     <select class="form-select form-select-sm" name="order_by" id="order-by-filter">
                         <option value="" selected>مرتب سازی</option>
-                        <option value="-created_date">جدیدترین سفارشات</option>
-                        <option value="created_date"> قدیمی ترین سفارشات</option>
+                        <option value="-created_date">جدیدترین نظرات</option>
+                        <option value="created_date"> قدیمی ترین نظرات</option>
                     </select>
                 </div>
                 <div class="col-md-1 py-1">
@@ -97,29 +96,31 @@
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">شماره سفارش</th>
-                            <th scope="col">سفارش دهنده</th>
-                            <th scope="col">قیمت کل</th>
+                            <th scope="col">#</th>
+                            <th scope="col">محصول</th>
+                            <th scope="col">نام و نام خانواگی </th>
+                            <th scope="col">امتیاز</th>
                             <th scope="col">تاریخ ثبت</th>
                             <th scope="col">وضعیت</th>
-
+                            <th scope="col">مشاهده</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for object in object_list %}
                         <tr>
-                            <td><a href="{% url 'dashboard:admin:order-detail' pk=object.pk %}">{{object.id}}</a></td>
-                            <td>{{object.user.email}}</td>
-                            {% if object.coupon %}
-                            <td class="formatted-price">{{object.total_price}}</td>
-                            {% else %}
-                            <td class="formatted-price">{{object.calcolate_total_price}}</td>
-                            {% endif %}
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td>{{object.product.title}}</td>
+                            <td>{{object.user.user_profile.get_fullname}}</td>            
+                            <td>{{object.rate}}</td>            
+                            
                             <td>{{object.created_date|date:"Y-m-d h:i"}}</td>
-                            <td><span>{{object.get_status.label}}</span></td>
+                            <td>{{object.get_status.label}}</td>
+                            <td>       
+                                <a class="btn btn-sm btn-icon btn-ghost-primary" href="{% url 'dashboard:admin:review-edit' pk=object.pk %}"><i
+                                        class="bi-eye"></i></a>
+                            </td>
                         </tr>
                         {% endfor %}
-
                     </tbody>
                 </table>
             </div>

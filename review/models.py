@@ -12,7 +12,7 @@ class ReviewTypeModel(models.IntegerChoices):
 
 class ReviewModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, related_name="product_review")
     description = models.TextField()
     rate = models.IntegerField(
         default=5, validators=[MinValueValidator(0), MaxValueValidator(5)]
@@ -27,6 +27,13 @@ class ReviewModel(models.Model):
     
     class Meta:
         ordering = ["-created_date"]
+
+    def get_status(self):
+        return{
+            "id" : self.status,
+            "title" : ReviewTypeModel(self.status).name,
+            "label" : ReviewTypeModel(self.status).label,
+        }
 
 
 @receiver(post_save, sender=ReviewModel)

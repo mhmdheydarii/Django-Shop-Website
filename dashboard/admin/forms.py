@@ -3,7 +3,7 @@ from django import forms
 from accounts.models import Profile
 from shop.models import ProductModel, ProductCategoryModel, ProductImageModel
 from order.models import CouponModel
-
+from review.models import ReviewModel
 
 class AdminPasswordChangeForm(auth_form.PasswordChangeForm):
 
@@ -162,3 +162,23 @@ class CouponForm(forms.ModelForm):
         self.fields["discount_percent"].widget.attrs["class"] = "form-control"
         self.fields["max_limit_usage"].widget.attrs["class"] = "form-control"
         self.fields["used_by"].widget.attrs["class"] = "form-select"
+
+
+
+class ReviewForm(forms.ModelForm):
+
+    class Meta:
+        model = ReviewModel
+        fields = [
+            "product",
+            "description",
+            "rate",
+            "status"
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["product"].widget.attrs["class"] = "form-control"
+        self.fields["description"].widget.attrs["class"] = "form-control"
+        self.fields["rate"].widget.attrs["class"] = "form-select"
+        self.fields["status"].widget.attrs["class"] = "form-select"

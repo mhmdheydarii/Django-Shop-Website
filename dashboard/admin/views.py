@@ -17,11 +17,12 @@ from dashboard.admin.forms import (
     AdminCategoryCreateForm,
     AdminAddImageForm,
     CouponForm,
+    ReviewForm
 )
 from accounts.models import Profile
 from shop.models import ProductModel, ProductStatusType, ProductCategoryModel, ProductImageModel
 from order.models import CouponModel, OrderModel, OrderItemModel, StatusTypeModel
-
+from review.models import ReviewModel, ReviewTypeModel
 # Create your views here.
 
 
@@ -199,5 +200,33 @@ class AdminOrderDetailView(LoginRequiredMixin, HasAdminPermission, DetailView):
 
     
 
+class AdminReviewListView(LoginRequiredMixin, HasAdminPermission, ListView):
+    template_name = "dashboard/admin/review/review-list.html"
+    paginate_by = 30
 
+    def get_queryset(self):
+        queryset = ReviewModel.objects.all()
+
+        if search_q := self.request.GET.get("q"):
+            queryset = queryset.filter(product__title=search_q)
+        if status := self.request.GET.get("status"):
+            queryset = queryset.filter(status=status)
+        if order_by := self.request.GET.get("order_by"):
+            try:
+                queryset = queryset.order_by(order_by)
+            except FieldError:
+                pass
+        return queryset
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_comments"] = self.get_queryset().count()
+        return context
+    
+class AdminReviewEditView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
+    template_name = "dashboard/admin/review/review-edit.html"
+    queryset = ReviewModel.objects.all()
+    form_class = ReviewForm
+
+    def get_success_url(self):
+        return reverse_lazy("dashboard:admin:review-edit",kwargs={"pk":self.get_object().pk})
