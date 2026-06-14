@@ -64,21 +64,37 @@
 
         <div class="row">
             <!-- Table -->
-            <div class="table-responsive">
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">محصول</th>
-                            <th scope="col">نام و نام خانوادگی</th>
-                            <th scope="col">امتیاز</th>
-                            <th scope="col">تاریخ ثبت</th>
-                            <th scope="col">وضعیت</th>
-                        </tr>
-                    </thead>
-                    
-                </table>
-            </div>
-            <!-- End Table -->
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">تصویر</th>
+                <th scope="col">کد محصول</th>
+                <th scope="col">نام محصول</th>
+                <th scope="col">تعداد سفارش</th>
+                <th scope="col">قیمت واحد محصول</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for order_item in object.order_items.all %}
+              <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>
+                  <span class="avatar ">
+                    <img class="avatar-img" src="{{order_item.product.image.url}}" alt="Image Description">
+                  </span>
+                </td>
+                <td>{{order_item.product.pk}}</td>
+                <td>{{order_item.product.title}}</td>
+                <td>{{order_item.quantity}}</td>
+                <td class="formatted-price">{{order_item.price}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- End Table -->
 
         </div>
         <!-- End Row -->
