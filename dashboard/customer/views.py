@@ -102,6 +102,7 @@ class CustomerAddressDeleteView(LoginRequiredMixin, HasCustomerPermission, Succe
     
 class CustomerOrderListView(LoginRequiredMixin, HasCustomerPermission, ListView):
     template_name = "dashboard/customer/orders/order-list.html"
+    paginate_by = 10
     
     def get_queryset(self):
         queryset = OrderModel.objects.all()

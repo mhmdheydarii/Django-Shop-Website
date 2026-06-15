@@ -129,7 +129,7 @@
 
                                 <div class="col-6 col-md mb-3 mb-md-0">
                                     <small class="card-subtitle mb-0">وضعیت</small>
-                                    <small class="text-dark fw-semibold">{{object.get_status.lable}}</small>
+                                    <small class="text-dark fw-semibold">{{object.get_status.label}}</small>
                                 </div>
                                 <!-- End Col -->
 
@@ -164,10 +164,11 @@
 
                                 <div class="col-md-4">
                                     <div class="d-grid gap-2">
-
+                                        {% if object.status == 2 %}
                                         <a class="btn btn-primary btn-sm"
                                             href="{% url 'dashboard:customer:order-detail' pk=object.pk %}">مشاهده
                                             سفارش</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
