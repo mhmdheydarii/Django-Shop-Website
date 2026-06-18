@@ -14,11 +14,11 @@ class CartSession:
 
         self.session["cart"] = self._cart
 
-    def add_product(self, product_id, quantity):
+    def add_product(self, product_id, product_stock):
 
         for item in self._cart["items"]:
             if product_id == item["product_id"]:
-                if quantity > item["quantity"]:
+                if product_stock > item["quantity"]:
                     item["quantity"] += 1
                     break
                 else:

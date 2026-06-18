@@ -28,7 +28,7 @@ class ProductModel(models.Model):
     category = models.ForeignKey(
         ProductCategoryModel, on_delete=models.SET_NULL, null=True
     )
-    slug = models.SlugField(allow_unicode=True)
+    slug = models.SlugField(allow_unicode=True, unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     brief_description = models.TextField(null=True, blank=True)

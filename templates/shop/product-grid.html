@@ -209,14 +209,8 @@
                             </div>
 
                             <h4 class="card-title">
-                                {% if object.stock == 0 %}
-                                <a class="text-body me-1 fs-6 text-decoration-line-through"
-                                    href="{% url 'shop:product-detail' slug=object.slug %}">{{object.title}}</a>
-                                <span class="text-dark">ناموجود</span>
-                                {% else %}
                                     <a class="text-dark"
                                     href="{% url 'shop:product-detail' slug=object.slug %}">{{object.title}}</a>
-                                {% endif %}
                             </h4>
                             {% if object.is_discounted %}
                             <p class="card-text text-dark fs-4">
@@ -244,10 +238,15 @@
                                 <span class="small">{{object.avg_rate}}/5</span>
                             </a>
                             <!-- End Rating -->
-
-                            <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill"
-                                onclick="AddToCart('{{object.id}}')">افزودن به سبد
+                            {% if object.stock > 0 %}
+                                <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill"
+                                    onclick="AddToCart('{{object.id}}')">افزودن به سبد
                                 خرید</button>
+                            {% else %}
+                                <div class="d-grid mb-4">
+                                    <button type="button" class= "btn btn-outline-danger btn-sm btn-transition rounded-pill" disabled>محصول به اتمام رسیده است</button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <!-- End Card -->

@@ -151,14 +151,19 @@
                 <!-- End Collapse -->
             </div>
             <!-- End Accordion -->
-
             <div id="cart-success-message" class="alert alert-success" style="display:none;">
                 محصول با موفقیت به سبد خرید اضافه شد.
             </div>
+            {% if object.stock > 0 %}
             <div class="d-grid mb-4">
                 <button type="button" class="btn btn-primary btntransition" onclick="AddToCart('{{object.id}}')">افزودن
                     به سبد خرید</button>
             </div>
+            {% else %}
+            <div class="d-grid mb-4">
+                <button type="button" class= "btn btn-outline-danger" disabled>محصول به اتمام رسیده است</button>
+            </div>
+            {% endif %}
             <!-- Media -->
             <div class="d-flex align-items-center">
                 <div class="flex-shrink-0">

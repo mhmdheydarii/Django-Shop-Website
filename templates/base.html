@@ -476,7 +476,7 @@
 
     <!-- JS Ajax -->
     <script>
-        function AddToCart(product_id) {
+        function AddToCart(product_id, stock) {
             console.log(product_id)
             $.ajax({
                 url: '{% url "cart:session-add-product" %}',
