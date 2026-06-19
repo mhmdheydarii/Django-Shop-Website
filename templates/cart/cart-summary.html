@@ -55,24 +55,32 @@
 
                                     <div class="col-sm-3">
                                         <div class="row">
-                                            <div class="col-auto">
-                                                <!-- Select -->
-                                                <select class="form-select form-select-sm mb-3" onchange="changeProductQuantity('{{item.product_id}}',this.value)">
-                                                    {% with ''|center:item.product_obj.stock as range%}
-                                                        {% for _ in range %}
-                                                        <option value="{{forloop.counter}}" {% if forloop.counter == item.quantity %} selected {% endif %}>
-                                                            {{forloop.counter}}</option>
-                                                        {% endfor %}
-                                                    {% endwith %}
-                                                </select>
-                                                <!-- End Select -->
+                                            <div class="quantity-box d-flex align-items-center">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-secondary"
+                                                        onclick="changeProductQuantity('{{ item.product_id }}', {{ item.quantity|add:'-1' }})"
+                                                        {% if item.quantity <= 1 %}disabled{% endif %}>
+                                                    -
+                                                </button>
+
+                                                <span class="mx-3 fw-bold">
+                                                    {{ item.quantity }}
+                                                </span>
+
+                                                <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                    onclick="changeProductQuantity('{{ item.product_id }}', {{ item.quantity|add:'1' }})"
+                                                    {% if item.quantity >= item.product_obj.stock %}disabled{% endif %}>
+                                                    +
+                                                </button>
+
                                             </div>
                                             <div class="col-auto">
                                                 <div class="d-grid gap-2">
-                                                    <button class="btn btn-sm" onclick="removeProduct('{{item.product_id}}')">
+                                                    <button class="btn btn-sm"
+                                                        onclick="removeProduct('{{item.product_id}}')">
                                                         <i class="bi-trash me-1"></i> حذف
                                                     </button>
-                                                    <button class="btn btn-sm " >
+                                                    <button class="btn btn-sm ">
                                                         <i class="bi-heart-fill ms-1 "></i>جزو علایق
                                                     </button>
                                                 </div>
@@ -94,9 +102,9 @@
                     </li>
                     <!-- End Item -->
                     {% empty %}
-                        <div class="row text-center w-100 py-5">
-                            <p class="text-center">هیچ کالایی برای نمایش در سبد خرید وجود ندارد.</p>
-                        </div>
+                    <div class="row text-center w-100 py-5">
+                        <p class="text-center">هیچ کالایی برای نمایش در سبد خرید وجود ندارد.</p>
+                    </div>
                     {% endfor %}
                 </ul>
                 <!-- End List Group -->
@@ -182,7 +190,7 @@
             type: 'POST',
             data: {
                 product_id: product_id,
-                quantity : quantity,
+                quantity: quantity,
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             success: function (response) {
