@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     "order",
     "payment",
     "review",
+    
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
