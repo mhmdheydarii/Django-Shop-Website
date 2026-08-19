@@ -108,6 +108,8 @@ at the beginning of your terminal line.
 ```bash
 pip install -r requirements.txt
 ```
+<br>
+
 
 <h3>6. Configure environment variables</h3>
 
@@ -119,7 +121,7 @@ DEBUG = True
 ALLOWED_HOSTS = "*"
 TIME_ZONE = "UTC"
 ```
-<br>
+
 
 <h3>7. Run the project</h3>
 
