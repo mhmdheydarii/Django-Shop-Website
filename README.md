@@ -7,14 +7,41 @@
 
   <h2 style="color:#34495e;">About the Project</h2>
   <p>
-    This is a Django e-commerce website. As you can see, it has many features, especially considering that it is my first project
+     This is a Django e-commerce website with features such as product management, shopping cart, coupons, orders, ratings, comments, and payment integration.
   </p>
 
   <h2 style="color:#34495e;">Project Goal</h2>
   <p>
-    I developed this project to learn more about database relationships in e-commerce systems, shopping cart implementation, and other related concepts
+    I developed this project to improve my understanding of database relationships in e-commerce systems, shopping cart implementation, order management, and other related concepts.
   </p>
 </section>
+
+<h2>Features</h2>
+<ul>
+  <li>Session Authentication</li>
+  <li>Iranian Phone Number Validation</li>
+  <li>Role-Based Permissions</li>
+  <li>Admin & Customer Dashboards</li>
+  <li>Product Filtering</li>
+  <li>Product Ordering</li>
+  <li>Product Searching</li>
+  <li>Product Rating</li>
+  <li>Product Commenting</li>
+  <li>Shopping Cart</li>
+  <li>Coupon System</li>
+  <li>Order Management</li>
+  <li>Payment Integration</li>
+</ul>
+
+
+<h2>Technologies</h2>
+<ul>
+  <li> Python</li>
+  <li> Django</li>
+  <li> SQLite</li>
+  <li> Django Signals</li>
+  <li> HTML, CSS, JavaScript</li>
+</ul>
 
 <h2>⚙️ Installation (Windows)</h2>
 
@@ -82,9 +109,19 @@ at the beginning of your terminal line.
 pip install -r requirements.txt
 ```
 
+<h3>6. Configure environment variables</h3>
+
+<p>Create a .env file in the project root and add the required environment variables.</p>
+
+```bash
+SECRET_KEY = your_secret_key
+DEBUG = True
+ALLOWED_HOSTS = "*"
+TIME_ZONE = "UTC"
+```
 <br>
 
-<h3>6. Run the project</h3>
+<h3>7. Run the project</h3>
 
 
 ```bash
