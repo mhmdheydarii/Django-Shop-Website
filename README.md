@@ -121,7 +121,7 @@ DEBUG = True
 ALLOWED_HOSTS = "*"
 TIME_ZONE = "UTC"
 ```
-
+</br>
 
 <h3>7. Run the project</h3>
 
